@@ -7,20 +7,72 @@
     <link rel="stylesheet" href="./assets/styles.css" />
     <!-- Import Vue.js -->
     <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+
+    <style>
+      input {
+        width: 8%;
+        height: 50px;
+      }
+
+      input[type='radio'] {
+        position: relative;
+        top: 8px;
+        right: 16px;
+        opacity: 0;
+      }
+
+      .circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        border: 2px solid white;
+        display: inline-block;
+        margin-right: 10px;
+        position: absolute;
+        z-index: -1;
+      }
+
+      .center {
+        display: flex;
+        align-items: center;
+      }
+    </style>
   </head>
   <body>
     <div id="app">
       <div class="nav-bar"></div>
-      
+
       <div class="product-display">
         <div class="product-container">
           <div class="product-image">
-            <img v-bind:src="image">
+            <img v-bind:src="image" />
           </div>
           <div class="product-info">
             <h1>{{ product }}</h1>
             <p v-if="inStock">In Stock</p>
             <p v-else>Out of Stock</p>
+
+            <ul style="list-style: circle;">
+              <li v-for="detail in details">{{ detail }}</li>
+            </ul>
+
+            <p>
+              Color :
+              <span :style="{ color: selectedColor }">{{ selectedColor }}</span>
+            </p>
+
+            <div v-for="variant in variants" :key="variant.id" class="center">
+              <div
+                class="circle"
+                :style="{ backgroundColor: variant.color }"
+              ></div>
+              <input
+                type="radio"
+                :id="variant.id"
+                :value="variant.color"
+                v-model="selectedColor"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -31,7 +83,7 @@
 
     <!-- Mount App -->
     <script>
-      const mountedApp = app.mount('#app')
+      const mountedApp = app.mount('#app');
     </script>
   </body>
 </html>
